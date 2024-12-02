@@ -1,228 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="OrderActivity">
+    android:layout_height="match_parent">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/order_title"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textColor="#8B008B"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:padding="16dp">
 
-    <!-- Pizza Style Selection -->
-    <TextView
-        android:id="@+id/pizza_style_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pizza_style_label"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingEnd="8dp"/>
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yappers Pizza Zone Order"
+            android:textSize="26sp"
+            android:gravity="center"
+            android:textColor="#8B008B"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="16dp" />
 
-    <Spinner
-        android:id="@+id/styleComboBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/pizza_style_label"
-        app:layout_constraintTop_toTopOf="@+id/pizza_style_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        android:padding="8dp"/>
+        <!-- Pizza Style -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pizza Style:"
+            android:layout_marginBottom="8dp" />
+        <Spinner
+            android:id="@+id/styleSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <!-- Pizza Size Selection -->
-    <TextView
-        android:id="@+id/pizza_size_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pizza_size_label"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/pizza_style_label"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingEnd="8dp"/>
+        <!-- Pizza Size -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pizza Size:"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+        <Spinner
+            android:id="@+id/sizeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <Spinner
-        android:id="@+id/sizeComboBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/pizza_size_label"
-        app:layout_constraintTop_toTopOf="@+id/pizza_size_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        android:padding="8dp"/>
+        <!-- Pizza Type -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pizza Type:"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+        <Spinner
+            android:id="@+id/typeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <!-- Pizza Type Selection -->
-    <TextView
-        android:id="@+id/pizza_type_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pizza_type_label"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/pizza_size_label"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingEnd="8dp"/>
+        <!-- Toppings Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available Toppings:"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+        <ListView
+            android:id="@+id/availableToppingsListView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:dividerHeight="1dp" />
 
-    <Spinner
-        android:id="@+id/typeComboBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/pizza_type_label"
-        app:layout_constraintTop_toTopOf="@+id/pizza_type_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        android:padding="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selected Toppings:"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+        <ListView
+            android:id="@+id/selectedToppingsListView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:dividerHeight="1dp" />
 
-    <!-- Image Display -->
-    <ImageView
-        android:id="@+id/pizzaImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:contentDescription="@string/pizza_image_desc"
-        app:layout_constraintTop_toBottomOf="@+id/pizza_type_label"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        <!-- Add/Remove Buttons -->
+        <Button
+            android:id="@+id/addToppingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Topping"
+            android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/removeToppingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Topping"
+            android:layout_marginTop="8dp" />
 
-    <!-- Available Toppings -->
-    <TextView
-        android:id="@+id/toppings_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/toppings_label"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/pizzaImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingEnd="8dp"/>
+        <!-- Order Buttons -->
+        <Button
+            android:id="@+id/addToOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to Pizza Order"
+            android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/placeOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place Order"
+            android:layout_marginTop="8dp" />
 
-    <ListView
-        android:id="@+id/toppingsListView"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toppings_label"
-        android:dividerHeight="2dp"
-        android:padding="8dp"/>
+        <!-- Cost Details -->
+        <TextView
+            android:id="@+id/currentPizzaCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Pizza Cost (pre-sales tax): $0.00"
+            android:layout_marginTop="16dp" />
+        <TextView
+            android:id="@+id/totalOrderCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Order Cost (including sales tax): $0.00"
+            android:layout_marginTop="8dp" />
 
-    <!-- Add/Remove Topping Buttons -->
-    <Button
-        android:id="@+id/addToppingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_topping_button"
-        app:layout_constraintTop_toBottomOf="@+id/toppingsListView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        <!-- Footer -->
+        <TextView
+            android:id="@+id/footerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thank you for choosing RU Pizzeria!"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_marginTop="16dp" />
 
-    <Button
-        android:id="@+id/removeToppingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/remove_topping_button"
-        app:layout_constraintTop_toBottomOf="@+id/addToppingButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Order Buttons -->
-    <Button
-        android:id="@+id/addToOrderButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_to_order_button"
-        app:layout_constraintTop_toBottomOf="@+id/removeToppingButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/clearSelectionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/clear_selection_button"
-        app:layout_constraintTop_toBottomOf="@+id/addToOrderButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/viewOrderDetailsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/view_order_details_button"
-        app:layout_constraintTop_toBottomOf="@+id/clearSelectionButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/placeOrderButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/place_order_button"
-        app:layout_constraintTop_toBottomOf="@+id/viewOrderDetailsButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/viewAllOrdersButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/view_all_orders_button"
-        app:layout_constraintTop_toBottomOf="@+id/placeOrderButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Current Pizza Cost -->
-    <TextView
-        android:id="@+id/currentPizzaCostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/current_pizza_cost_label"
-        app:layout_constraintTop_toBottomOf="@+id/viewAllOrdersButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Total Order Cost -->
-    <TextView
-        android:id="@+id/totalOrderCostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/total_order_cost_label"
-        app:layout_constraintTop_toBottomOf="@+id/currentPizzaCostLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Footer -->
-    <TextView
-        android:id="@+id/footerLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/footer_label"
-        android:textSize="14sp"
-        android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@+id/totalOrderCostLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

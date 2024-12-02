@@ -1,18 +1,16 @@
 <resources>
-    <!-- Application Name -->
-    <string name="app_name">Yappers Pizza</string>
+    <!-- Title Text -->
+    <string name="order_title">Order Your Pizza</string>
+    <string name="app_name">Yappers Pizzeria</string>
 
-    <!-- Title and Labels -->
-    <string name="order_title">Pizza Order</string>
-    <string name="pizza_style_label">Pizza Style:</string>
-    <string name="pizza_size_label">Pizza Size:</string>
-    <string name="pizza_type_label">Pizza Type:</string>
-    <string name="toppings_label">Available Toppings:</string>
-    <string name="current_pizza_cost_label">Current Pizza Cost:</string>
-    <string name="total_order_cost_label">Total Order Cost:</string>
-    <string name="footer_label">Thank you for ordering with us!</string>
+    <!-- Pizza Labels -->
+    <string name="pizza_style_label">Pizza Style</string>
+    <string name="pizza_size_label">Pizza Size</string>
+    <string name="pizza_type_label">Pizza Type</string>
+    <string name="toppings_label">Available Toppings</string>
+    <string name="pizza_image_desc">Image of the pizza</string>
 
-    <!-- Buttons -->
+    <!-- Button Labels -->
     <string name="add_topping_button">Add Topping</string>
     <string name="remove_topping_button">Remove Topping</string>
     <string name="add_to_order_button">Add to Order</string>
@@ -21,32 +19,28 @@
     <string name="place_order_button">Place Order</string>
     <string name="view_all_orders_button">View All Orders</string>
 
-    <!-- Placeholder text for Spinner options -->
-    <string name="default_select_style">Select Style</string>
-    <string name="default_select_size">Select Size</string>
-    <string name="default_select_type">Select Type</string>
+    <!-- Cost Labels -->
+    <string name="current_pizza_cost_label">Current Pizza Cost:</string>
+    <string name="total_order_cost_label">Total Order Cost:</string>
 
-    <!-- Content Description for ImageView -->
-    <string name="pizza_image_desc">Image of selected pizza</string>
+    <!-- Footer -->
+    <string name="footer_label">Thank you for ordering!</string>
 
-    <!-- Pizza Styles -->
-    <string-array name="pizza_styles">
-        <item>New York Style</item>
-        <item>Chicago Style</item>
+    <!-- Pizza Options (arrays for Spinners) -->
+    <string-array name="pizza_types">
+        <item>Veg</item>
+        <item>Non-Veg</item>
     </string-array>
 
-    <!-- Pizza Sizes -->
+    <string-array name="pizza_styles">
+        <item>Thin Crust</item>
+        <item>Thick Crust</item>
+        <item>Cheese Burst</item>
+    </string-array>
+
     <string-array name="pizza_sizes">
         <item>Small</item>
         <item>Medium</item>
         <item>Large</item>
-    </string-array>
-
-    <!-- Pizza Types -->
-    <string-array name="pizza_types">
-        <item>Deluxe</item>
-        <item>BBQ Chicken</item>
-        <item>Meatzza</item>
-        <item>Build Your Own</item>
     </string-array>
 </resources>
