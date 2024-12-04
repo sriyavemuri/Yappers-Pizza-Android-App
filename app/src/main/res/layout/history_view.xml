@@ -93,10 +93,5 @@
             android:text="Cancel Order"
             android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/exportOrdersButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Export Orders" />
     </LinearLayout>
 </LinearLayout>

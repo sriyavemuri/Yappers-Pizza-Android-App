@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
-public class OrderHistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
     private ListView orderHistoryListView;
     private TextView orderDetailsLabel, statusLabel;
@@ -20,7 +20,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_history);
+        setContentView(R.layout.history_view);
 
         // Initialize views
         orderHistoryListView = findViewById(R.id.orderHistoryListView);
