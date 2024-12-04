@@ -28,7 +28,7 @@ public class HistoryActivity extends AppCompatActivity {
         statusLabel = findViewById(R.id.statusLabel);
         backToOrderViewButton = findViewById(R.id.backToOrderViewButton);
         cancelOrderButton = findViewById(R.id.cancelOrderButton);
-        exportOrdersButton = findViewById(R.id.exportOrdersButton);
+
 
         // Initialize mock order history
         orderHistory = new ArrayList<>();
