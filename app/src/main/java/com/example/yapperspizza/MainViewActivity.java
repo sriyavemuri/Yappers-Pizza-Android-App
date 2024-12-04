@@ -19,7 +19,7 @@ public class MainViewActivity extends AppCompatActivity {
 
         // Navigate to Order Menu Screen
         orderMenuButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, OrderMenuActivity.class);
+            Intent intent = new Intent(MainViewActivity.this, OrderMenuActivity.class);
             startActivity(intent);
         });
 

@@ -1,4 +1,4 @@
-package pizza_classes;
+package com.example.yapperspizza;
 
 /**
  * Represents the available toppings for a pizza.
