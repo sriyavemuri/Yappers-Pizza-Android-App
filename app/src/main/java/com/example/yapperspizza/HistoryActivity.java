@@ -12,7 +12,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private ListView orderHistoryListView;
     private TextView orderDetailsLabel, statusLabel;
-    private Button backToOrderViewButton, cancelOrderButton, exportOrdersButton;
+    private Button backToOrderViewButton, cancelOrderButton;
 
     private ArrayList<Order> orderHistory; // Change to Order list, not String list
     private ArrayAdapter<Order> orderHistoryAdapter; // Change to Order Adapter
@@ -47,7 +47,6 @@ public class HistoryActivity extends AppCompatActivity {
         // Handle button clicks
         backToOrderViewButton.setOnClickListener(v -> backToOrderMenu());
         cancelOrderButton.setOnClickListener(v -> cancelSelectedOrder());
-        exportOrdersButton.setOnClickListener(v -> exportOrders());
     }
 
     private void populateOrderHistory() {
@@ -97,18 +96,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
-    private void exportOrders() {
-        // Example of exporting orders (mock implementation)
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Export Orders")
-                .setMessage("Orders exported successfully.")
-                .setPositiveButton("OK", null)
-                .show();
-    }
-
     private void backToOrderMenu() {
         // Navigate back to Order Menu screen
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainViewActivity.class);
         startActivity(intent);
     }
 }

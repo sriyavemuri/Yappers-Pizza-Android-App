@@ -78,5 +78,18 @@ public class Order {
     public static void incrementOrderCounter() {
         orderCounter++;
     }
+
+    /**
+     * Returns a string representation of the Order object.
+     * This representation includes the order number.
+     *
+     * @return A string in the format "Order #<orderNumber>", where <orderNumber> is the
+     * unique identifier of the order.
+     */
+    @Override
+    public String toString() {
+        return "Order #" + orderNumber; // Ensure orderNumber is a valid field in your Order class
+    }
+
 }
 
