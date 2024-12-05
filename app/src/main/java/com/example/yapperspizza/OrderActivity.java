@@ -224,4 +224,41 @@ public class OrderActivity extends AppCompatActivity {
         double total = currentOrder.calculateTotal();
         totalOrderCost.setText(String.format(Locale.US, "$%.2f", total));
     }
+
+    private void addToppingToSelected() {
+        int selectedIndex = availableToppingsListView.getCheckedItemPosition();
+        if (selectedIndex >= 0 && selectedToppings.size() < 7) {
+            String topping = availableToppings.get(selectedIndex);
+            availableToppings.remove(topping);
+            selectedToppings.add(topping);
+            updateToppingsList();
+            updateCurrentPizzaCost(TOPPING_COST);
+        } else if (selectedToppings.size() >= 7) {
+            Toast.makeText(this, "Maximum 7 toppings allowed.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Please select a topping to add.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void removeToppingFromSelected() {
+        int selectedIndex = selectedToppingsListView.getCheckedItemPosition();
+        if (selectedIndex >= 0) {
+            String topping = selectedToppings.get(selectedIndex);
+            selectedToppings.remove(topping);
+            availableToppings.add(topping);
+            updateToppingsList();
+            updateCurrentPizzaCost(-TOPPING_COST);
+        } else {
+            Toast.makeText(this, "Please select a topping to remove.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void enableToppingControls(boolean isBuildYourOwn) {
+        availableToppingsListView.setEnabled(isBuildYourOwn);
+        selectedToppingsListView.setEnabled(isBuildYourOwn);
+        addToppingButton.setEnabled(isBuildYourOwn);
+        removeToppingButton.setEnabled(isBuildYourOwn);
+    }
+
+
 }
