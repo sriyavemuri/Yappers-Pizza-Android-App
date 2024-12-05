@@ -68,8 +68,10 @@
         <ListView
             android:id="@+id/availableToppingsListView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:dividerHeight="1dp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dividerHeight="1dp"
+            android:scrollbars="vertical" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,8 +82,10 @@
         <ListView
             android:id="@+id/selectedToppingsListView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:dividerHeight="1dp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dividerHeight="1dp"
+            android:scrollbars="vertical" />
 
         <!-- Add/Remove Buttons -->
         <Button

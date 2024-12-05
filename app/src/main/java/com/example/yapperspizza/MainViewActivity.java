@@ -28,7 +28,7 @@ public class MainViewActivity extends AppCompatActivity {
 
     // Navigate to the Order Menu screen (example with intent)
     private void navigateToOrderMenu() {
-        Intent intent = new Intent(MainViewActivity.this, MainViewActivity.class);  // Assuming you have OrderMenuActivity
+        Intent intent = new Intent(MainViewActivity.this, OrderActivity.class);  // Assuming you have OrderMenuActivity
         startActivity(intent);
     }
 
