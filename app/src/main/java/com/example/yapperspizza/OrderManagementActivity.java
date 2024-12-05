@@ -2,172 +2,122 @@ package com.example.yapperspizza;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import androidx.appcompat.app.AlertDialog;
+import android.view.View;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-/**
- * OrderManagementActivity: Activity to manage the current order, including adding/removing pizzas
- * and calculating the total order price.
- * @author Zeel Patel, Sriya Vemuri
- */
 public class OrderManagementActivity extends AppCompatActivity {
-    // XML elements
-    private ListView allPizzas;
-    private EditText orderNumber, orderSubtotal, orderSalesTax, orderTotal;
 
-    // Activity variables
-    private Order currentOrder = new Order();  // Current order being managed
-    private StoreOrders storeOrders = new StoreOrders();  // Store orders collection
+    private ListView placedPizzasListView;
+    private EditText subtotalEditText, taxEditText, totalEditText;
+    private Button clearOrderButton, placeOrderButton, mainButton;
+    private ArrayAdapter<String> pizzaAdapter;
 
-    /**
-     * This method runs OrderManagementActivity.
-     * @param savedInstanceState Used to reload UI state.
-     */
+    private Order currentOrder;
+    private StoreOrders storeOrders;
+    private DecimalFormat df = new DecimalFormat("#,##0.00");
+    private static final double TAX_RATE = 0.06625;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_management_view);  // Make sure this XML exists
+        setContentView(R.layout.order_management_view);
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);  // For showing alerts
-        buildAlert(alert);
+        // Initialize views
+        placedPizzasListView = findViewById(R.id.placedPizzasListView);
+        subtotalEditText = findViewById(R.id.subtotalEditText);
+        taxEditText = findViewById(R.id.taxEditText);
+        totalEditText = findViewById(R.id.totalEditText);
+        clearOrderButton = findViewById(R.id.clearOrderButton);
+        placeOrderButton = findViewById(R.id.placeOrderButton);
+        mainButton = findViewById(R.id.mainButton);
 
-        // Initialize UI components
-        allPizzas = findViewById(R.id.placedPizzasListView);
-        orderNumber = findViewById(R.id.orderNumberEditText);
-        orderSubtotal = findViewById(R.id.subtotalEditText);
-        orderSalesTax = findViewById(R.id.taxEditText);
-        orderTotal = findViewById(R.id.totalEditText);
-        Button clearOrder = findViewById(R.id.clearOrderButton);
-        Button placeOrder = findViewById(R.id.placeOrderButton);
-        Button backToMain = findViewById(R.id.mainButton);
+        // Initialize data
+        currentOrder = new Order();
+        storeOrders = StoreOrders.getInstance();
 
-        // Initial order setup (e.g., load from MainActivity or create a new one)
-        // Assuming orders were passed or are being initialized in some way
+        // Set up ListView adapter
+        pizzaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        placedPizzasListView.setAdapter(pizzaAdapter);
 
-        // Display current order pizzas
-        updatePizzas();
+        // Add listeners
+        clearOrderButton.setOnClickListener(v -> handleClearOrder());
+        placeOrderButton.setOnClickListener(v -> handlePlaceOrder());
+        mainButton.setOnClickListener(v -> handleBackToMain());
 
-        // Display order number
-        orderNumber.setText(String.valueOf(currentOrder.getOrderNumber()));
-
-        // Update price details
-        updateOrderPrice();
-
-        // Set on-click listener to remove pizza from order
-        allPizzas.setOnItemClickListener((adapterView, view, position, id) -> {
-            alert.setMessage("Successfully removed pizza from order!");
-            AlertDialog confirmation = alert.create();
-            confirmation.show();
-
-            // Remove pizza from current order
-            Pizza pizzaToRemove = currentOrder.getPizzas().get(position);
-            currentOrder.removePizza(pizzaToRemove);
-
-            // Update price and list view
-            updateOrderPrice();
-            updatePizzas();
-        });
-
-        // Clear current order
-        clearOrder.setOnClickListener(view -> {
-            alert.setMessage("Successfully cleared order!");
-            AlertDialog confirmation = alert.create();
-            confirmation.show();
-
-            clearActivity();
-        });
-
-        // Place order
-        placeOrder.setOnClickListener(view -> {
-            alert.setMessage("Successfully placed order! Thank you for ordering from Yappers Pizza!");
-            AlertDialog confirmation = alert.create();
-            confirmation.show();
-
-            // Add the current order to store orders
-            storeOrders.addOrder(currentOrder);
-
-            // Clear the activity and return
-            clearActivity();
-        });
-
-        // Back to main screen
-        backToMain.setOnClickListener(view -> {
-            Intent intent = new Intent(OrderManagementActivity.this, MainViewActivity.class);
-            startActivity(intent);
-        });
+        // Update the view
+        updateOrderView();
     }
 
     /**
-     * Updates the ListView to show all pizzas in the current order.
+     * Updates the ListView and cost fields based on the current order.
      */
-    private void updatePizzas() {
-        ArrayList<String> pizzaDetails = new ArrayList<>();
+    private void updateOrderView() {
+        pizzaAdapter.clear();
         for (Pizza pizza : currentOrder.getPizzas()) {
-            pizzaDetails.add(pizza.toString());
+            pizzaAdapter.add(pizza.toString());
         }
-
-        ArrayAdapter<String> allPizzasAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pizzaDetails);
-        allPizzas.setAdapter(allPizzasAdapter);
+        updateCosts();
     }
 
     /**
-     * Updates the UI with the order's subtotal, sales tax, and total price.
+     * Updates the subtotal, tax, and total cost fields.
      */
-    private void updateOrderPrice() {
+    private void updateCosts() {
+        double subtotal = calculateSubtotal();
+        double tax = subtotal * TAX_RATE;
+        double total = subtotal + tax;
+
+        subtotalEditText.setText("$" + df.format(subtotal));
+        taxEditText.setText("$" + df.format(tax));
+        totalEditText.setText("$" + df.format(total));
+    }
+
+    /**
+     * Calculates the subtotal cost of all pizzas in the order.
+     *
+     * @return the subtotal
+     */
+    private double calculateSubtotal() {
         double subtotal = 0;
         for (Pizza pizza : currentOrder.getPizzas()) {
             subtotal += pizza.price();
         }
-
-        double tax = subtotal * 0.06625;
-        double total = subtotal + tax;
-
-        // Format prices
-        orderSubtotal.setText(priceFormatter(subtotal));
-        orderSalesTax.setText(priceFormatter(tax));
-        orderTotal.setText(priceFormatter(total));
+        return subtotal;
     }
 
     /**
-     * Formats the price to include a dollar sign and two decimal places.
-     * @param price the price to format
-     * @return the formatted price
+     * Clears the current order.
      */
-    private String priceFormatter(double price) {
-        DecimalFormat formatter = new DecimalFormat("#,##0.00");
-        return String.format("$%s", formatter.format(price));
-    }
-
-    /**
-     * Clears the current order and resets UI elements.
-     */
-    private void clearActivity() {
+    private void handleClearOrder() {
         currentOrder.clearPizzas();
-        updatePizzas();
-        updateOrderPrice();
-
-        orderNumber.setText("####");
-        orderSubtotal.setText("$0.00");
-        orderSalesTax.setText("$0.00");
-        orderTotal.setText("$0.00");
-
-        Intent intent = new Intent(OrderManagementActivity.this, MainViewActivity.class);
-        startActivity(intent);
+        updateOrderView();
+        Toast.makeText(this, "Order cleared.", Toast.LENGTH_SHORT).show();
     }
 
     /**
-     * Builds the alert dialog for showing success messages.
-     * @param alert the alert dialog builder
+     * Places the current order and adds it to the store-wide orders.
      */
-    private void buildAlert(AlertDialog.Builder alert) {
-        alert.setCancelable(true);
-        alert.setPositiveButton("OK", (dialog, id) -> dialog.cancel());
+    private void handlePlaceOrder() {
+        if (currentOrder.getPizzas().isEmpty()) {
+            Toast.makeText(this, "Cannot place an empty order.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        storeOrders.addOrder(currentOrder);
+        currentOrder = new Order(); // Reset the current order
+        updateOrderView();
+        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Navigates back to the main menu.
+     */
+    private void handleBackToMain() {
+        Intent intent = new Intent(this, MainViewActivity.class);
+        startActivity(intent);
     }
 }

@@ -13,9 +13,8 @@ public class HistoryActivity extends AppCompatActivity {
     private ListView orderHistoryListView;
     private TextView orderDetailsLabel, statusLabel;
     private Button backToOrderViewButton, cancelOrderButton;
-
-    private List<Order> orderHistory; // Now a List<Order> from StoreOrders
-    private ArrayAdapter<String> orderHistoryAdapter; // Adapter for displaying order details as strings
+    private List<Order> orderHistory;
+    private ArrayAdapter<String> orderHistoryAdapter;
     private StoreOrders storeOrders;
 
     @Override
