@@ -2,11 +2,11 @@ package com.example.yapperspizza;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -14,8 +14,9 @@ public class HistoryActivity extends AppCompatActivity {
     private TextView orderDetailsLabel, statusLabel;
     private Button backToOrderViewButton, cancelOrderButton;
 
-    private ArrayList<Order> orderHistory; // Change to Order list, not String list
-    private ArrayAdapter<Order> orderHistoryAdapter; // Change to Order Adapter
+    private List<Order> orderHistory; // Now a List<Order> from StoreOrders
+    private ArrayAdapter<String> orderHistoryAdapter; // Adapter for displaying order details as strings
+    private StoreOrders storeOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +30,12 @@ public class HistoryActivity extends AppCompatActivity {
         backToOrderViewButton = findViewById(R.id.backToOrderViewButton);
         cancelOrderButton = findViewById(R.id.cancelOrderButton);
 
-
-        // Initialize mock order history
-        orderHistory = new ArrayList<>();
-        populateOrderHistory(); // Add mock orders for testing
+        // Retrieve the shared StoreOrders singleton
+        storeOrders = StoreOrders.getInstance();
+        orderHistory = storeOrders.getOrders(); // Get the List<Order>
 
         // Set up adapter for ListView
-        orderHistoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderHistory);
+        orderHistoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formatOrders(orderHistory));
         orderHistoryListView.setAdapter(orderHistoryAdapter);
 
         // Handle ListView item selection
@@ -49,46 +49,48 @@ public class HistoryActivity extends AppCompatActivity {
         cancelOrderButton.setOnClickListener(v -> cancelSelectedOrder());
     }
 
-    private void populateOrderHistory() {
-        // Create pizzas for mock orders
-        Pizza bbqChicken = new BBQChicken(Crust.THIN);
-        bbqChicken.setSize(Size.MEDIUM);
-        Pizza buildYourOwn = new BuildYourOwn(Crust.PAN);
-        buildYourOwn.setSize(Size.LARGE);
-        ((BuildYourOwn) buildYourOwn).addTopping(Topping.PEPPERONI);
-        Pizza deluxe = new Deluxe(Crust.DEEP_DISH);
-        deluxe.setSize(Size.SMALL);
-
-        // Create orders
-        Order order1 = new Order();
-        order1.addPizza(bbqChicken);
-
-        Order order2 = new Order();
-        order2.addPizza(buildYourOwn);
-        order2.addPizza(deluxe);
-
-        // Add orders to order history
-        orderHistory.add(order1);
-        orderHistory.add(order2);
+    /**
+     * Formats orders for display in the ListView.
+     *
+     * @param orders The list of orders.
+     * @return A list of formatted strings for display.
+     */
+    private List<String> formatOrders(List<Order> orders) {
+        List<String> formattedOrders = new ArrayList<>();
+        for (Order order : orders) {
+            formattedOrders.add("Order #" + order.getOrderNumber() + ": " + order.getPizzas().size() + " pizzas");
+        }
+        return formattedOrders;
     }
 
+    /**
+     * Displays the details of the selected order in the TextView.
+     *
+     * @param selectedOrder The selected order.
+     */
     private void displayOrderDetails(Order selectedOrder) {
         if (selectedOrder != null) {
             StringBuilder orderDetails = new StringBuilder("Order #" + selectedOrder.getOrderNumber() + "\n\n");
             for (Pizza pizza : selectedOrder.getPizzas()) {
-                orderDetails.append(pizza.toString()).append("\n\n");
+                orderDetails.append(pizza.toString()).append("\n");
             }
+            orderDetails.append("\nOrder Total: $").append(String.format("%.2f", selectedOrder.calculateTotal()));
             orderDetailsLabel.setText(orderDetails.toString());
         } else {
             orderDetailsLabel.setText("Select an order to view details.");
         }
     }
 
+    /**
+     * Cancels the selected order and updates the ListView.
+     */
     private void cancelSelectedOrder() {
         int selectedIndex = orderHistoryListView.getCheckedItemPosition();
         if (selectedIndex != ListView.INVALID_POSITION) {
-            orderHistory.remove(selectedIndex);
-            orderHistoryAdapter.notifyDataSetChanged();
+            Order orderToRemove = orderHistory.get(selectedIndex);
+            storeOrders.getOrders().remove(orderToRemove); // Remove from StoreOrders
+            orderHistoryAdapter.clear();
+            orderHistoryAdapter.addAll(formatOrders(orderHistory)); // Refresh the adapter
             orderDetailsLabel.setText("Order canceled.");
             Toast.makeText(this, "Order canceled.", Toast.LENGTH_SHORT).show();
         } else {
@@ -96,9 +98,12 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Navigates back to the main order view.
+     */
     private void backToOrderMenu() {
-        // Navigate back to Order Menu screen
         Intent intent = new Intent(this, MainViewActivity.class);
         startActivity(intent);
+        finish();
     }
 }

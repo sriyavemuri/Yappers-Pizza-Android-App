@@ -12,6 +12,7 @@ public class StoreOrders {
     /**
      * A list containing all the orders placed at the store.
      */
+    private static StoreOrders instance;
     private List<Order> orders;
 
     /**
@@ -19,6 +20,17 @@ public class StoreOrders {
      */
     public StoreOrders() {
         this.orders = new ArrayList<>();
+    }
+
+    /**
+     * Converting Store Orders to a singleton.
+     * @return StoreOrders as a singleton
+     */
+    public static synchronized StoreOrders getInstance() {
+        if (instance == null) {
+            instance = new StoreOrders();
+        }
+        return instance;
     }
 
     /**
