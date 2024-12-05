@@ -1,113 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/orderManagementTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Order Details"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Order Details List -->
-    <ListView
-        android:id="@+id/orderDetailsListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
-
-    <!-- Cost Information -->
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:padding="8dp">
+        android:padding="16dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Order"
+            android:textSize="26sp"
+            android:gravity="center"
+            android:textColor="#8B008B"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Order Number -->
+        <TextView
+            android:id="@+id/orderNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Number:"
+            android:layout_marginBottom="8dp" />
+        <EditText
+            android:id="@+id/orderNumberEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Placed Pizzas -->
+        <TextView
+            android:id="@+id/placedPizzasTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Placed Pizzas:"
+            android:layout_marginBottom="8dp" />
+        <ListView
+            android:id="@+id/placedPizzasListView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:dividerHeight="1dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Subtotal, Tax, and Total -->
+        <TextView
+            android:id="@+id/subtotalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtotal:"
+            android:layout_marginBottom="8dp" />
+        <EditText
+            android:id="@+id/subtotalEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/subtotalLabel"
-            android:layout_width="0dp"
+            android:id="@+id/taxTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Subtotal: $0.00"
-            android:textSize="16sp" />
+            android:text="Tax:"
+            android:layout_marginBottom="8dp" />
+        <EditText
+            android:id="@+id/taxEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/taxLabel"
-            android:layout_width="0dp"
+            android:id="@+id/totalTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Tax: $0.00"
-            android:textSize="16sp" />
+            android:text="Total:"
+            android:layout_marginBottom="8dp" />
+        <EditText
+            android:id="@+id/totalEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Order Buttons -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/clearOrderButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Clear Order"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/placeOrderButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Place Order"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Back to Main Button -->
+        <Button
+            android:id="@+id/mainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back to Main"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <!-- Footer -->
         <TextView
-            android:id="@+id/totalCostLabel"
-            android:layout_width="0dp"
+            android:id="@+id/footerText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Total: $0.00"
-            android:textSize="16sp" />
+            android:text="Thank you for choosing RU Pizzeria!"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_marginTop="16dp" />
+
     </LinearLayout>
 
-    <!-- Buttons Row 1 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="8dp">
-
-        <Button
-            android:id="@+id/removeSelectedPizzaButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remove Selected Pizza"
-            android:enabled="false" />
-
-        <Button
-            android:id="@+id/placeOrderButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="Place Order" />
-
-        <Button
-            android:id="@+id/clearOrderButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="Clear Order" />
-    </LinearLayout>
-
-    <!-- Buttons Row 2 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="8dp">
-
-        <Button
-            android:id="@+id/addAPizzaButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add a Pizza" />
-
-        <Button
-            android:id="@+id/pastOrdersButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="Past Orders" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
