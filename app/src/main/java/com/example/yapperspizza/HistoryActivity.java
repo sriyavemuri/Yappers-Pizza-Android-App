@@ -14,8 +14,8 @@ public class HistoryActivity extends AppCompatActivity {
     private TextView orderDetailsLabel, statusLabel;
     private Button backToOrderViewButton, cancelOrderButton, exportOrdersButton;
 
-    private ArrayList<String> orderHistory; // Mock data for orders
-    private ArrayAdapter<String> orderHistoryAdapter;
+    private ArrayList<Order> orderHistory; // Change to Order list, not String list
+    private ArrayAdapter<Order> orderHistoryAdapter; // Change to Order Adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,13 @@ public class HistoryActivity extends AppCompatActivity {
         orderHistory = new ArrayList<>();
         populateOrderHistory(); // Add mock orders for testing
 
+        // Set up adapter for ListView
         orderHistoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderHistory);
         orderHistoryListView.setAdapter(orderHistoryAdapter);
 
         // Handle ListView item selection
         orderHistoryListView.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedOrder = orderHistory.get(position);
+            Order selectedOrder = orderHistory.get(position);
             displayOrderDetails(selectedOrder);
         });
 
@@ -50,16 +51,35 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void populateOrderHistory() {
-        // Mock data
-        orderHistory.add("Order #1: 2 pizzas");
-        orderHistory.add("Order #2: 3 pizzas");
-        orderHistory.add("Order #3: 1 pizza");
+        // Create pizzas for mock orders
+        Pizza bbqChicken = new BBQChicken(Crust.THIN);
+        bbqChicken.setSize(Size.MEDIUM);
+        Pizza buildYourOwn = new BuildYourOwn(Crust.PAN);
+        buildYourOwn.setSize(Size.LARGE);
+        ((BuildYourOwn) buildYourOwn).addTopping(Topping.PEPPERONI);
+        Pizza deluxe = new Deluxe(Crust.DEEP_DISH);
+        deluxe.setSize(Size.SMALL);
+
+        // Create orders
+        Order order1 = new Order();
+        order1.addPizza(bbqChicken);
+
+        Order order2 = new Order();
+        order2.addPizza(buildYourOwn);
+        order2.addPizza(deluxe);
+
+        // Add orders to order history
+        orderHistory.add(order1);
+        orderHistory.add(order2);
     }
 
-    private void displayOrderDetails(String selectedOrder) {
+    private void displayOrderDetails(Order selectedOrder) {
         if (selectedOrder != null) {
-            // Mock details based on selected order
-            orderDetailsLabel.setText("Details for " + selectedOrder + "\n\n- Pizza 1: Cheese\n- Pizza 2: Pepperoni");
+            StringBuilder orderDetails = new StringBuilder("Order #" + selectedOrder.getOrderNumber() + "\n\n");
+            for (Pizza pizza : selectedOrder.getPizzas()) {
+                orderDetails.append(pizza.toString()).append("\n\n");
+            }
+            orderDetailsLabel.setText(orderDetails.toString());
         } else {
             orderDetailsLabel.setText("Select an order to view details.");
         }
