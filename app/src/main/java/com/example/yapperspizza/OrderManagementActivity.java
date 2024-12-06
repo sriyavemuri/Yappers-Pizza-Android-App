@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class OrderManagementActivity extends AppCompatActivity {
 
@@ -129,12 +130,21 @@ public class OrderManagementActivity extends AppCompatActivity {
      * Clears the current order.
      */
     private void handleClearOrder() {
+        if (currentOrder == null || currentOrder.getPizzas().isEmpty()) {
+            Toast.makeText(this, "Nothing to be cleared.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (currentOrder != null) {
-            currentOrder.clearPizzas();
+            Iterator<Pizza> iterator = currentOrder.getPizzas().iterator();
+            while (iterator.hasNext()) {
+                iterator.next();
+                iterator.remove(); // Safely remove the current pizza
+            }
         }
         updateOrderView();
         Toast.makeText(this, "Order cleared.", Toast.LENGTH_SHORT).show();
     }
+
 
     /**
      * Places the current order and adds it to the store-wide orders.
