@@ -17,5 +17,5 @@ public enum Size {
     /**
      * Represents a large-sized pizza.
      */
-    LARGE;
+    LARGE
 }

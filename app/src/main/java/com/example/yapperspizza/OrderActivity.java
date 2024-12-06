@@ -172,7 +172,8 @@ public class OrderActivity extends AppCompatActivity {
             updateCurrentPizzaCost(); // Update the cost display
         } else {
             currentPizza = null;
-            currentPizzaCostEditText.setText("$0.00");
+            currentPizzaCostEditText.setText(getString(R.string.default_price));
+
         }
     }
 
@@ -185,26 +186,17 @@ public class OrderActivity extends AppCompatActivity {
         if (pizza != null) {
             currentOrder.addPizza(pizza);
             updateTotalOrderCost();
-            footerText.setText("Pizza added to order!");
+            footerText.setText(getString(R.string.pizza_added_to_order));
         } else {
-            footerText.setText("Error: Invalid pizza configuration.");
+            footerText.setText(getString(R.string.error_invalid_pizza_configuration));
+
         }
     }
 
-//    private void handlePlaceOrder() {
-//        if (currentOrder.getPizzas().isEmpty()) {
-//            footerText.setText("Error: No pizzas in order.");
-//            return;
-//        }
-//        storeOrders.addOrder(currentOrder);
-//        currentOrder = new Order();
-//        updateTotalOrderCost();
-//        footerText.setText("Order placed successfully!");
-//    }
 
     private void handleConfirmOrder() {
         if (currentOrder.getPizzas().isEmpty()) {
-            footerText.setText("Error: No pizzas in order.");
+            footerText.setText(getString(R.string.error_invalid_pizza_configuration));
             return;
         }
 
@@ -248,7 +240,7 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 break;
             default:
-                footerText.setText("Error: Invalid pizza type selected.");
+                footerText.setText(getString(R.string.error_invalid_pizza_configuration));
                 return null;
         }
 
@@ -273,7 +265,7 @@ public class OrderActivity extends AppCompatActivity {
             currentCost += costChange;
             currentPizzaCostEditText.setText(String.format(Locale.US, "$%.2f", currentCost));
         } catch (NumberFormatException e) {
-            currentPizzaCostEditText.setText("$0.00"); // Reset if parsing fails
+            currentPizzaCostEditText.setText(getString(R.string.default_price)); // Reset if parsing fails
         }
     }
 
@@ -284,7 +276,7 @@ public class OrderActivity extends AppCompatActivity {
             double totalCost = baseCost + toppingsCost;
             currentPizzaCostEditText.setText(String.format(Locale.US, "$%.2f", totalCost));
         } else {
-            currentPizzaCostEditText.setText("$0.00");
+            currentPizzaCostEditText.setText(getString(R.string.default_price));
         }
     }
     private void enableToppingControls(boolean isBuildYourOwn) {

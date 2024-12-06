@@ -43,4 +43,42 @@
         <item>Medium</item>
         <item>Large</item>
     </string-array>
+
+
+    <string name="select_order_to_view_details">Select an order to view details.</string>
+    <string name="order_canceled">Order canceled.</string>
+    <string name="order_canceled_successfully">Order canceled successfully.</string>
+    <string name="select_order_to_cancel">Select an order to cancel.</string>
+
+    <string name="pizza_added_to_order">Pizza added to order!</string>
+    <string name="error_invalid_pizza_configuration">Error: Invalid pizza configuration.</string>
+    <string name="error_no_pizzas_in_order">Error: No pizzas in order.</string>
+    <string name="order_placed_successfully">Order placed successfully!</string>
+    <string name="error_invalid_pizza_type_selected">Error: Invalid pizza type selected.</string>
+    <string name="default_price">$0.00</string>
+
+    <string name="subtotal_label">Subtotal: %s</string>
+    <string name="tax_label">Tax: %s</string>
+    <string name="total_label">Total: %s</string>
+
+
+    <string name="order_history">Order History</string>
+    <string name="order_details">Order Details</string>
+    <string name="status_text">Click on an order to view details. Cancel orders as needed.</string>
+    <string name="make_new_order">Make a New Order</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="back_to_main_menu">Back to Main Menu</string>
+
+    <string name="go_to_order_menu">Go to Order Menu</string>
+    <string name="manage_orders">Manage Orders</string>
+    <string name="view_past_orders">View Past Orders</string>
+    <string name="selected_toppings_label"> Selected Toppings</string>
+    <string name="topping_name_label"> Topping Name</string>
+
+
+    <string name="order_number_label">Order Number:</string>
+    <string name="placed_pizzas_label">Placed Pizzas:</string>
+    <string name="remove_pizza_button">Remove Selected Pizza</string>
+    <string name="clear_order_button">Clear Order</string>
+
 </resources>

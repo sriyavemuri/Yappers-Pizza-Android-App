@@ -28,6 +28,6 @@ public enum Crust {
     /**
      * Yum.
      */
-    HAND_TOSSED;
+    HAND_TOSSED
 }
 

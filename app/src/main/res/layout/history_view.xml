@@ -12,7 +12,7 @@
         android:id="@+id/headerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RU Pizzeria Management System"
+        android:text="@string/app_name"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center"
@@ -23,7 +23,7 @@
         android:id="@+id/orderHistoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order History"
+        android:text="@string/order_history"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -43,7 +43,7 @@
         android:id="@+id/orderDetailsLabelTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order Details"
+        android:text="@string/order_details"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
@@ -70,7 +70,7 @@
         android:id="@+id/statusLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Click on an order to view details. Cancel or export orders as needed."
+        android:text="@string/status_text"
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:background="#ececec"
@@ -88,14 +88,14 @@
             android:id="@+id/backToOrderViewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Make a New Order"
+            android:text="@string/make_new_order"
             android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/cancelOrderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel Order"
+            android:text="@string/cancel_order"
             android:layout_marginEnd="8dp" />
 
     </LinearLayout>
@@ -104,7 +104,7 @@
         android:id="@+id/backToMainMenuButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back to Main Menu"
+        android:text="@string/back_to_main_menu"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         android:textStyle="bold"

@@ -16,7 +16,7 @@
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yappers Pizza Zone Order"
+            android:text="@string/order_title"
             android:textSize="26sp"
             android:gravity="center"
             android:textColor="#8B008B"
@@ -28,42 +28,45 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pizza Style:"
+            android:text="@string/pizza_style_label"
             android:layout_marginBottom="8dp" />
         <Spinner
             android:id="@+id/styleSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
         <!-- Pizza Size -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pizza Size:"
+            android:text="@string/pizza_size_label"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
         <Spinner
             android:id="@+id/sizeSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
 
         <!-- Pizza Type -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pizza Type:"
+            android:text="@string/pizza_type_label"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
         <Spinner
             android:id="@+id/typeSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
         <!-- Toppings Selection -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Available Toppings:"
+            android:text="@string/toppings_label"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
         <androidx.recyclerview.widget.RecyclerView
@@ -76,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Selected Toppings:"
+            android:text="@string/selected_toppings_label"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
         <androidx.recyclerview.widget.RecyclerView
@@ -91,13 +94,13 @@
             android:id="@+id/addToOrderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add to Pizza Order"
+            android:text="@string/add_to_order_button"
             android:layout_marginTop="16dp" />
         <Button
             android:id="@+id/confirmOrderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Confirm Order"
+            android:text="@string/place_order_button"
             android:layout_marginTop="8dp" />
 
         <!-- Current Pizza Cost -->
@@ -105,7 +108,7 @@
             android:id="@+id/currentPizzaCostLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Pizza Cost (pre-sales tax):"
+            android:text="@string/current_pizza_cost_label"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
@@ -120,7 +123,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="$0.00"
+            android:text="@string/default_price"
             android:layout_marginBottom="16dp" />
 
         <!-- Total Order Cost -->
@@ -128,7 +131,7 @@
             android:id="@+id/totalOrderCostLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Order Cost (including sales tax):"
+            android:text="@string/total_order_cost_label"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
 
@@ -143,7 +146,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="$0.00"
+            android:text="@string/default_price"
             android:layout_marginBottom="16dp" />
 
         <!-- Footer -->
@@ -151,7 +154,7 @@
             android:id="@+id/footerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thank you for choosing RU Pizzeria!"
+            android:text="@string/footer_label"
             android:textStyle="italic"
             android:gravity="center"
             android:layout_marginTop="16dp" />
@@ -160,11 +163,11 @@
             android:id="@+id/backToMainMenuButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Back to Main Menu"
+            android:text="@string/back_to_main_menu"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="48dp" />
 
     </LinearLayout>
 </ScrollView>

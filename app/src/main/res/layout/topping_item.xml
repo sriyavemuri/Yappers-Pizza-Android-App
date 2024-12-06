@@ -16,7 +16,7 @@
         android:id="@+id/toppingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Topping Name"
+        android:text="@string/topping_name_label"
         android:textSize="16sp" />
 </LinearLayout>
 

@@ -76,9 +76,16 @@ public class OrderManagementActivity extends AppCompatActivity {
         double tax = subtotal * TAX_RATE;
         double total = subtotal + tax;
 
-        subtotalEditText.setText("$" + df.format(subtotal));
-        taxEditText.setText("$" + df.format(tax));
-        totalEditText.setText("$" + df.format(total));
+
+        String formattedSubtotal = "$" + df.format(subtotal);
+        String formattedTax = "$" + df.format(tax);
+        String formattedTotal = "$" + df.format(total);
+
+
+        subtotalEditText.setText(getString(R.string.subtotal_label, formattedSubtotal));
+        taxEditText.setText(getString(R.string.tax_label, formattedTax));
+        totalEditText.setText(getString(R.string.total_label, formattedTotal));
+
     }
 
     private void updateOrderNumber() {

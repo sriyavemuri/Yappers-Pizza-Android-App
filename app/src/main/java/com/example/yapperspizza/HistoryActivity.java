@@ -110,7 +110,8 @@ public class HistoryActivity extends AppCompatActivity {
             orderDetails.append("\nOrder Total: $").append(String.format("%.2f", selectedOrder.calculateTotal()));
             orderDetailsLabel.setText(orderDetails.toString());
         } else {
-            orderDetailsLabel.setText("Select an order to view details.");
+            orderDetailsLabel.setText(getString(R.string.select_order_to_view_details));
+
         }
     }
 
@@ -131,11 +132,13 @@ public class HistoryActivity extends AppCompatActivity {
 
             // Clear selection and update labels
             orderHistoryListView.clearChoices(); // Clear the selection
-            orderDetailsLabel.setText("Order canceled.");
-            statusLabel.setText("Order canceled successfully.");
-            Toast.makeText(this, "Order canceled successfully.", Toast.LENGTH_SHORT).show();
+            orderDetailsLabel.setText(getString(R.string.order_canceled));
+            statusLabel.setText(getString(R.string.order_canceled_successfully));
+            Toast.makeText(this, getString(R.string.order_canceled_successfully), Toast.LENGTH_SHORT).show();
+
         } else {
-            statusLabel.setText("Select an order to cancel.");
+            statusLabel.setText(getString(R.string.select_order_to_cancel));
+
         }
     }
 
