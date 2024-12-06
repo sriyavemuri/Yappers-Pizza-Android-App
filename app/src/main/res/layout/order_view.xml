@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -65,12 +66,11 @@
             android:text="Available Toppings:"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
-        <ListView
-            android:id="@+id/availableToppingsListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/availableToppingsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:dividerHeight="1dp"
+            android:layout_height="150dp"
+            android:nestedScrollingEnabled="true"
             android:scrollbars="vertical" />
 
         <TextView
@@ -79,27 +79,12 @@
             android:text="Selected Toppings:"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
-        <ListView
-            android:id="@+id/selectedToppingsListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selectedToppingsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:dividerHeight="1dp"
+            android:layout_height="150dp"
+            android:nestedScrollingEnabled="true"
             android:scrollbars="vertical" />
-
-        <!-- Add/Remove Buttons -->
-        <Button
-            android:id="@+id/addToppingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Topping"
-            android:layout_marginTop="16dp" />
-        <Button
-            android:id="@+id/removeToppingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remove Topping"
-            android:layout_marginTop="8dp" />
 
         <!-- Order Buttons -->
         <Button
@@ -115,19 +100,51 @@
             android:text="Place Order"
             android:layout_marginTop="8dp" />
 
-        <!-- Cost Details -->
+        <!-- Current Pizza Cost -->
         <TextView
-            android:id="@+id/currentPizzaCost"
+            android:id="@+id/currentPizzaCostLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Pizza Cost (pre-sales tax):"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/currentPizzaCostEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Current Pizza Cost (pre-sales tax): $0.00"
-            android:layout_marginTop="16dp" />
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="$0.00"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Total Order Cost -->
         <TextView
-            android:id="@+id/totalOrderCost"
+            android:id="@+id/totalOrderCostLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Order Cost (including sales tax):"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/totalOrderCostEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Order Cost (including sales tax): $0.00"
-            android:layout_marginTop="8dp" />
+            android:background="@android:color/white"
+            android:inputType="none"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="$0.00"
+            android:layout_marginBottom="16dp" />
 
         <!-- Footer -->
         <TextView
@@ -137,6 +154,16 @@
             android:text="Thank you for choosing RU Pizzeria!"
             android:textStyle="italic"
             android:gravity="center"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/backToMainMenuButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back to Main Menu"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:layout_marginTop="16dp" />
 
     </LinearLayout>

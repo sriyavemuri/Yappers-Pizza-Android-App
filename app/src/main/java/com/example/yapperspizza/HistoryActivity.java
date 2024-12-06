@@ -12,7 +12,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private ListView orderHistoryListView;
     private TextView orderDetailsLabel, statusLabel;
-    private Button backToOrderViewButton, cancelOrderButton;
+    private Button backToOrderViewButton, cancelOrderButton, backToMainMenuButton;
     private List<Order> orderHistory;
     private ArrayAdapter<String> orderHistoryAdapter;
     private StoreOrders storeOrders;
@@ -36,6 +36,8 @@ public class HistoryActivity extends AppCompatActivity {
         // Set up adapter for ListView
         orderHistoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formatOrders(orderHistory));
         orderHistoryListView.setAdapter(orderHistoryAdapter);
+        // Display the order history
+        displayOrderHistory();
 
         // Handle ListView item selection
         orderHistoryListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -46,6 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
         // Handle button clicks
         backToOrderViewButton.setOnClickListener(v -> backToOrderMenu());
         cancelOrderButton.setOnClickListener(v -> cancelSelectedOrder());
+        backToMainMenuButton.setOnClickListener(v -> handleBackToMain());
     }
 
     /**
@@ -61,6 +64,33 @@ public class HistoryActivity extends AppCompatActivity {
         }
         return formattedOrders;
     }
+
+    /**
+     * Populates the history list with all orders or shows a message if no orders exist.
+     */
+    private void displayOrderHistory() {
+        List<Order> allOrders = StoreOrders.getInstance().getOrders();
+
+        if (allOrders.isEmpty()) {
+            // If no orders, display an empty message
+            ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    new String[]{"No orders available."}
+            );
+            orderHistoryListView.setAdapter(emptyAdapter); // Use your actual ListView or RecyclerView here
+        } else {
+            // Populate with orders
+            ArrayAdapter<Order> ordersAdapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    allOrders
+            );
+            orderHistoryListView.setAdapter(ordersAdapter); // Use your actual ListView or RecyclerView here
+        }
+    }
+
+
 
     /**
      * Displays the details of the selected order in the TextView.
@@ -101,8 +131,18 @@ public class HistoryActivity extends AppCompatActivity {
      * Navigates back to the main order view.
      */
     private void backToOrderMenu() {
-        Intent intent = new Intent(this, MainViewActivity.class);
+        Intent intent = new Intent(this, OrderActivity.class);
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Navigates back to the main menu.
+     */
+    private void handleBackToMain() {
+        Intent intent = new Intent(this, MainViewActivity.class);
+        startActivity(intent);
+    }
+
+
 }

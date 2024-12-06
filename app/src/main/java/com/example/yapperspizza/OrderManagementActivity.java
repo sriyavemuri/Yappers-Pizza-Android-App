@@ -35,6 +35,8 @@ public class OrderManagementActivity extends AppCompatActivity {
         placeOrderButton = findViewById(R.id.placeOrderButton);
         mainButton = findViewById(R.id.mainButton);
 
+        storeOrders = StoreOrders.getInstance();
+
         // Initialize data
         currentOrder = new Order();
         storeOrders = StoreOrders.getInstance();

@@ -72,6 +72,14 @@ public class Order {
         return total * 1.06625;
     }
 
+    public double calculateSubtotal() {
+        double subtotal = 0;
+        for (Pizza pizza : pizzas) {
+            subtotal += pizza.price();
+        }
+        return subtotal;
+    }
+
     /**
      * Increments the order counter to ensure the next order gets a unique order number.
      */

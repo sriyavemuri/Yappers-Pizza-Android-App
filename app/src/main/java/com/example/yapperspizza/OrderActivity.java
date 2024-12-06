@@ -1,31 +1,33 @@
 package com.example.yapperspizza;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-/**
- * Activity for managing pizza orders.
- * Handles pizza creation, toppings selection, and order placement.
- * @author Sriya Vemuri
- */
 public class OrderActivity extends AppCompatActivity {
     private Spinner styleSpinner, sizeSpinner, typeSpinner;
-    private ListView availableToppingsListView, selectedToppingsListView;
+    private RecyclerView toppingsRecyclerView, selectedToppingsRecyclerView;
     private TextView currentPizzaCost, totalOrderCost, footerText;
-    private Button addToppingButton, removeToppingButton, addToOrderButton, placeOrderButton;
-
+    private Button addToOrderButton, placeOrderButton, backToMainMenuButton;
+    private ToppingAdapter availableToppingsAdapter, selectedToppingsAdapter;
+    private EditText currentPizzaCostEditText, totalOrderCostEditText;
     private StoreOrders storeOrders;
     private Order currentOrder;
     private PizzaFactory pizzaFactory;
-    private ArrayList<String> availableToppings;
-    private ArrayList<String> selectedToppings;
+    private List<Topping> availableToppings;
+    private List<Topping> selectedToppings;
+
+    private Pizza currentPizza;
 
     private static final double TOPPING_COST = 1.69;
+    private static final int MAX_TOPPINGS = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,42 +38,41 @@ public class OrderActivity extends AppCompatActivity {
         styleSpinner = findViewById(R.id.styleSpinner);
         sizeSpinner = findViewById(R.id.sizeSpinner);
         typeSpinner = findViewById(R.id.typeSpinner);
-        availableToppingsListView = findViewById(R.id.availableToppingsListView);
-        selectedToppingsListView = findViewById(R.id.selectedToppingsListView);
-        currentPizzaCost = findViewById(R.id.currentPizzaCost);
-        totalOrderCost = findViewById(R.id.totalOrderCost);
+        toppingsRecyclerView = findViewById(R.id.availableToppingsRecyclerView);
+        selectedToppingsRecyclerView = findViewById(R.id.selectedToppingsRecyclerView);
+        currentPizzaCostEditText = findViewById(R.id.currentPizzaCostEditText);
+        totalOrderCostEditText = findViewById(R.id.totalOrderCostEditText);
         footerText = findViewById(R.id.footerText);
-        addToppingButton = findViewById(R.id.addToppingButton);
-        removeToppingButton = findViewById(R.id.removeToppingButton);
         addToOrderButton = findViewById(R.id.addToOrderButton);
         placeOrderButton = findViewById(R.id.placeOrderButton);
+        backToMainMenuButton = findViewById(R.id.backToMainMenuButton);
 
         // Initialize order and toppings
         storeOrders = StoreOrders.getInstance();
         currentOrder = new Order();
         availableToppings = new ArrayList<>();
         selectedToppings = new ArrayList<>();
+
         initializeToppings();
-
-        // Set up spinners
         setupSpinners();
-
-        // Add listeners
+        setupRecyclerViews();
         addListeners();
     }
 
     private void initializeToppings() {
-        String[] toppingsArray = {"SAUSAGE", "PEPPERONI", "GREEN_PEPPER", "ONION", "MUSHROOM", "BBQ_CHICKEN",
-                "PROVOLONE", "CHEDDAR", "BEEF", "HAM", "PINEAPPLE", "JALAPENO", "SPINACH"};
-        for (String topping : toppingsArray) {
-            availableToppings.add(topping);
-        }
-
-        ArrayAdapter<String> availableAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, availableToppings);
-        availableToppingsListView.setAdapter(availableAdapter);
-
-        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedToppings);
-        selectedToppingsListView.setAdapter(selectedAdapter);
+        availableToppings.add(new Topping("Sausage", R.drawable.ic_sausage));
+        availableToppings.add(new Topping("Pepperoni", R.drawable.ic_pepperoni));
+        availableToppings.add(new Topping("Green Pepper", R.drawable.ic_green_pepper));
+        availableToppings.add(new Topping("Onion", R.drawable.ic_onion));
+        availableToppings.add(new Topping("Mushroom", R.drawable.ic_mushroom));
+        availableToppings.add(new Topping("BBQ Chicken", R.drawable.ic_bbq_chicken));
+        availableToppings.add(new Topping("Provolone", R.drawable.ic_provolone));
+        availableToppings.add(new Topping("Cheddar", R.drawable.ic_cheddar));
+        availableToppings.add(new Topping("Beef", R.drawable.ic_beef));
+        availableToppings.add(new Topping("Ham", R.drawable.ic_ham));
+        availableToppings.add(new Topping("Pineapple", R.drawable.ic_pineapple));
+        availableToppings.add(new Topping("Jalapeno", R.drawable.ic_jalapeno));
+        availableToppings.add(new Topping("Spinach", R.drawable.ic_spinach));
     }
 
     private void setupSpinners() {
@@ -91,12 +92,39 @@ public class OrderActivity extends AppCompatActivity {
         typeSpinner.setAdapter(typeAdapter);
     }
 
+    private void setupRecyclerViews() {
+        availableToppingsAdapter = new ToppingAdapter(availableToppings, position -> {
+            if (selectedToppings.size() < MAX_TOPPINGS) {
+                Topping selected = availableToppings.remove(position);
+                selectedToppings.add(selected);
+                updateRecyclerViews();
+                updateCurrentPizzaCost(TOPPING_COST);
+            } else {
+                Toast.makeText(this, "Maximum of 7 toppings allowed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        toppingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        toppingsRecyclerView.setAdapter(availableToppingsAdapter);
+
+        selectedToppingsAdapter = new ToppingAdapter(selectedToppings, position -> {
+            Topping removed = selectedToppings.remove(position);
+            availableToppings.add(removed);
+            updateRecyclerViews();
+            updateCurrentPizzaCost(-TOPPING_COST);
+        });
+
+        selectedToppingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        selectedToppingsRecyclerView.setAdapter(selectedToppingsAdapter);
+    }
     private void addListeners() {
+        // Set Pizza Style and Update Pizza Factory
         styleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String style = (String) parent.getItemAtPosition(position);
-                pizzaFactory = style.equals("New York Style") ? new NYPizza() : new ChicagoPizza();
+                pizzaFactory = "New York Style".equals(style) ? new NYPizza() : new ChicagoPizza();
+                updateCurrentPizza(); // Recalculate pizza whenever style changes
             }
 
             @Override
@@ -105,46 +133,55 @@ public class OrderActivity extends AppCompatActivity {
 
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String type = (String) parent.getItemAtPosition(position);
-                boolean isBuildYourOwn = type.equals("Build Your Own");
-                availableToppingsListView.setEnabled(isBuildYourOwn);
-                selectedToppingsListView.setEnabled(isBuildYourOwn);
-                addToppingButton.setEnabled(isBuildYourOwn);
-                removeToppingButton.setEnabled(isBuildYourOwn);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String type = (String) adapterView.getItemAtPosition(i);
+                boolean isBuildYourOwn = "Build Your Own".equals(type);
+                enableToppingControls(isBuildYourOwn);
+
+                if (!isBuildYourOwn) {
+                    selectedToppings.clear(); // Clear toppings if switching away from Build Your Own
+                    updateRecyclerViews();
+                }
+
+                updateCurrentPizza(); // Update pizza whenever type changes
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-//        addToppingButton.setOnClickListener(v -> handleAddTopping());
-//        removeToppingButton.setOnClickListener(v -> handleRemoveTopping());
+        sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateCurrentPizza(); // Update pizza whenever size changes
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
         addToOrderButton.setOnClickListener(v -> handleAddPizzaToOrder());
         placeOrderButton.setOnClickListener(v -> handlePlaceOrder());
-
-        availableToppingsListView.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedTopping = availableToppings.get(position);
-            if (selectedToppings.size() < 7 && !selectedToppings.contains(selectedTopping)) {
-                selectedToppings.add(selectedTopping);
-                availableToppings.remove(selectedTopping);
-                updateToppingsList();
-                updateCurrentPizzaCost(TOPPING_COST);
-            } else {
-                Toast.makeText(this, "Cannot add more than 7 toppings or duplicate toppings.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        selectedToppingsListView.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedTopping = selectedToppings.get(position);
-            selectedToppings.remove(selectedTopping);
-            availableToppings.add(selectedTopping);
-            updateToppingsList();
-            updateCurrentPizzaCost(-TOPPING_COST);
-        });
-
+        backToMainMenuButton.setOnClickListener(v -> handleBackToMain());
     }
 
+    private void updateCurrentPizza() {
+        String type = (String) typeSpinner.getSelectedItem();
+        String size = (String) sizeSpinner.getSelectedItem();
+
+        if (pizzaFactory != null && type != null && size != null) {
+            currentPizza = createPizza();
+            updateCurrentPizzaCost(); // Update the cost display
+        } else {
+            currentPizza = null;
+            currentPizzaCostEditText.setText("$0.00");
+        }
+    }
+
+    private void updateTotalOrderCost() {
+        double total = currentOrder.calculateTotal();
+        totalOrderCostEditText.setText(String.format(Locale.US, "$%.2f", total));
+    }
     private void handleAddPizzaToOrder() {
         Pizza pizza = createPizza();
         if (pizza != null) {
@@ -174,8 +211,8 @@ public class OrderActivity extends AppCompatActivity {
 
         String type = (String) typeSpinner.getSelectedItem();
         String size = (String) sizeSpinner.getSelectedItem();
+        String style = (String) styleSpinner.getSelectedItem();
         Size pizzaSize = Size.valueOf(size.toUpperCase(Locale.ROOT));
-
         Pizza pizza = null;
 
         switch (type) {
@@ -190,9 +227,8 @@ public class OrderActivity extends AppCompatActivity {
                 break;
             case "Build Your Own":
                 pizza = pizzaFactory.createBuildYourOwn();
-                for (String topping : selectedToppings) {
-                    Topping toppingEnum = Topping.valueOf(topping.toUpperCase());
-                    pizza.addTopping(toppingEnum);
+                for (Topping topping : selectedToppings) {
+                    pizza.addTopping(topping);
                 }
                 break;
             default:
@@ -202,63 +238,51 @@ public class OrderActivity extends AppCompatActivity {
 
         if (pizza != null) {
             pizza.setSize(pizzaSize);
+            pizza.setStyle(style); // Set the style of the pizza
         }
+
         return pizza;
     }
 
-
-    private void updateToppingsList() {
-        ((ArrayAdapter<String>) availableToppingsListView.getAdapter()).notifyDataSetChanged();
-        ((ArrayAdapter<String>) selectedToppingsListView.getAdapter()).notifyDataSetChanged();
+    private void updateRecyclerViews() {
+        availableToppingsAdapter.notifyDataSetChanged();
+        selectedToppingsAdapter.notifyDataSetChanged();
     }
 
     private void updateCurrentPizzaCost(double costChange) {
-        String currentCostText = currentPizzaCost.getText().toString(); // Convert to String
-        double currentCost = Double.parseDouble(currentCostText.replace("$", ""));
-        currentCost += costChange;
-        currentPizzaCost.setText(String.format(Locale.US, "$%.2f", currentCost));
-    }
-
-
-    private void updateTotalOrderCost() {
-        double total = currentOrder.calculateTotal();
-        totalOrderCost.setText(String.format(Locale.US, "$%.2f", total));
-    }
-
-    private void addToppingToSelected() {
-        int selectedIndex = availableToppingsListView.getCheckedItemPosition();
-        if (selectedIndex >= 0 && selectedToppings.size() < 7) {
-            String topping = availableToppings.get(selectedIndex);
-            availableToppings.remove(topping);
-            selectedToppings.add(topping);
-            updateToppingsList();
-            updateCurrentPizzaCost(TOPPING_COST);
-        } else if (selectedToppings.size() >= 7) {
-            Toast.makeText(this, "Maximum 7 toppings allowed.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Please select a topping to add.", Toast.LENGTH_SHORT).show();
+        String currentCostText = currentPizzaCostEditText.getText().toString();
+        String numericPart = currentCostText.replaceAll("[^0-9.]", ""); // Extract numeric part
+        try {
+            double currentCost = Double.parseDouble(numericPart);
+            currentCost += costChange;
+            currentPizzaCostEditText.setText(String.format(Locale.US, "$%.2f", currentCost));
+        } catch (NumberFormatException e) {
+            currentPizzaCostEditText.setText("$0.00"); // Reset if parsing fails
         }
     }
 
-    private void removeToppingFromSelected() {
-        int selectedIndex = selectedToppingsListView.getCheckedItemPosition();
-        if (selectedIndex >= 0) {
-            String topping = selectedToppings.get(selectedIndex);
-            selectedToppings.remove(topping);
-            availableToppings.add(topping);
-            updateToppingsList();
-            updateCurrentPizzaCost(-TOPPING_COST);
+    private void updateCurrentPizzaCost() {
+        if (currentPizza != null) {
+            double baseCost = currentPizza.price();
+            double toppingsCost = selectedToppings.size() * TOPPING_COST;
+            double totalCost = baseCost + toppingsCost;
+            currentPizzaCostEditText.setText(String.format(Locale.US, "$%.2f", totalCost));
         } else {
-            Toast.makeText(this, "Please select a topping to remove.", Toast.LENGTH_SHORT).show();
+            currentPizzaCostEditText.setText("$0.00");
         }
     }
-
     private void enableToppingControls(boolean isBuildYourOwn) {
-        availableToppingsListView.setEnabled(isBuildYourOwn);
-        selectedToppingsListView.setEnabled(isBuildYourOwn);
-        addToppingButton.setEnabled(isBuildYourOwn);
-        removeToppingButton.setEnabled(isBuildYourOwn);
+        int visibility = isBuildYourOwn ? View.VISIBLE : View.GONE;
+        toppingsRecyclerView.setVisibility(visibility);
+        selectedToppingsRecyclerView.setVisibility(visibility);
     }
 
+    /**
+     * Navigates back to the main menu.
+     */
+    private void handleBackToMain() {
+        Intent intent = new Intent(this, MainViewActivity.class);
+        startActivity(intent);
+    }
 
 }
