@@ -13,7 +13,7 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     private ListView placedPizzasListView;
     private EditText subtotalEditText, taxEditText, totalEditText;
-    private Button clearOrderButton, placeOrderButton, mainButton;
+    private Button clearOrderButton, placeOrderButton, mainButton, removePizzaButton;
     private ArrayAdapter<String> pizzaAdapter;
     private Order currentOrder;
     private StoreOrders storeOrders;
@@ -33,7 +33,7 @@ public class OrderManagementActivity extends AppCompatActivity {
         clearOrderButton = findViewById(R.id.clearOrderButton);
         placeOrderButton = findViewById(R.id.placeOrderButton);
         mainButton = findViewById(R.id.mainButton);
-
+        removePizzaButton = findViewById(R.id.removePizzaButton);
 
         storeOrders = StoreOrders.getInstance();
         currentOrder = storeOrders.getLatestOrder();
@@ -41,11 +41,13 @@ public class OrderManagementActivity extends AppCompatActivity {
         // Set up ListView adapter
         pizzaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         placedPizzasListView.setAdapter(pizzaAdapter);
+        placedPizzasListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         // Add listeners
         clearOrderButton.setOnClickListener(v -> handleClearOrder());
         placeOrderButton.setOnClickListener(v -> handlePlaceOrder());
         mainButton.setOnClickListener(v -> handleBackToMain());
+        removePizzaButton.setOnClickListener(v -> handleRemovePizza());
 
         // Update the view
         updateOrderView();
@@ -84,6 +86,20 @@ public class OrderManagementActivity extends AppCompatActivity {
         int orderNumber = orderIndex + 1; // Index starts at 0, so add 1
         EditText orderNumberEditText = findViewById(R.id.orderNumberEditText);
         orderNumberEditText.setText(String.valueOf(orderNumber));
+    }
+
+    private void handleRemovePizza() {
+        int selectedPosition = placedPizzasListView.getCheckedItemPosition(); // Get the selected item position
+        if (selectedPosition == ListView.INVALID_POSITION) {
+            Toast.makeText(this, "Please select a pizza to remove.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Pizza pizzaToRemove = currentOrder.getPizzas().get(selectedPosition); // Get the selected pizza
+        currentOrder.removePizza(pizzaToRemove); // Remove the pizza from the order
+
+        updateOrderView(); // Update the ListView and cost fields
+        Toast.makeText(this, "Pizza removed successfully.", Toast.LENGTH_SHORT).show();
     }
 
 
