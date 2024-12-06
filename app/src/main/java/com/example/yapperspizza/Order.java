@@ -1,6 +1,7 @@
 package com.example.yapperspizza;
 
 import java.util.ArrayList;
+
 /**
  * Represents an order in the pizzeria, containing a list of pizzas and an associated order number.
  * @author Zeel Patel, Sriya Vemuri
@@ -26,8 +27,11 @@ public class Order {
      * @return the unique order number
      */
     public int getOrderNumber() {
-        return orderNumber;
+        StoreOrders storeOrders = StoreOrders.getInstance();
+        return storeOrders.getOrders().indexOf(this) + 1; // 1-based index
     }
+
+
 
     /**
      * Adds a pizza to this order.
@@ -99,5 +103,9 @@ public class Order {
         return "Order #" + orderNumber; // Ensure orderNumber is a valid field in your Order class
     }
 
+    // Setter for orderNumber
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 }
 

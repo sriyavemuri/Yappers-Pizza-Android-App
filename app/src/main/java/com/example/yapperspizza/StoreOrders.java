@@ -1,5 +1,7 @@
 package com.example.yapperspizza;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class StoreOrders {
@@ -20,10 +22,15 @@ public class StoreOrders {
     }
 
     public void addOrder(Order order) {
-        orders.add(order);
+        if (!orders.contains(order)) {
+            orders.add(order);
+            order.setOrderNumber(orders.size()); // Dynamically set order number
+        }
     }
 
+
     public ArrayList<Order> getOrders() {
+        Log.d("StoreOrders", "Current orders: " + orders.size());
         return orders;
     }
 
@@ -34,4 +41,16 @@ public class StoreOrders {
     public void setCurrentOrder(Order newOrder) {
         this.currentOrder = newOrder;
     }
+
+    public void clearOrders() {
+        orders.clear();
+    }
+
+    public Order getLatestOrder() {
+        if (orders.isEmpty()) {
+            return new Order(); // Return a new empty order if no orders exist
+        }
+        return orders.get(orders.size() - 1); // Return the most recent order
+    }
+
 }

@@ -65,6 +65,27 @@ public abstract class Pizza {
     }
 
     /**
+     * Gets the names of the toppings as a formatted string.
+     * @return a string of comma-separated topping names, or "no toppings" if none exist
+     */
+    public String getToppingNames() {
+        if (toppings.isEmpty()) {
+            return "no toppings";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < toppings.size(); i++) {
+            builder.append(toppings.get(i).getName()); // Use getName() for each topping
+            if (i < toppings.size() - 1) {
+                builder.append(", ");
+            }
+        }
+
+        return builder.toString();
+    }
+
+
+    /**
      * Sets the list of toppings on the pizza.
      * @param toppings an {@link ArrayList} of {@link Topping} objects to set
      */

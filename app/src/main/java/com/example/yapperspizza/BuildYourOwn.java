@@ -65,14 +65,14 @@ public class BuildYourOwn extends Pizza {
     public String toString() {
         StringBuilder sb = new StringBuilder("Build Your Own " + getSize() + " " + getStyle() + " Style -> Crust: " +
                 getCrust());
-        ArrayList<Topping> toppings = getToppings();
-        if (!toppings.isEmpty()) {
-            sb.append("  Toppings: ");
-            for (Topping topping : toppings) {
-                sb.append(topping).append(", ");
-            }
-            sb.setLength(sb.length() - 2);
+
+        // Use getToppingNames() to append the formatted list of topping names
+        String toppingNames = getToppingNames();
+        if (!toppingNames.equals("no toppings")) {
+            sb.append("  Toppings: ").append(toppingNames);
         }
+
         return sb.toString();
     }
+
 }

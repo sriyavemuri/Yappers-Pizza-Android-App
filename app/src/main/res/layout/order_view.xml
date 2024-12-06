@@ -94,10 +94,10 @@
             android:text="Add to Pizza Order"
             android:layout_marginTop="16dp" />
         <Button
-            android:id="@+id/placeOrderButton"
+            android:id="@+id/confirmOrderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Place Order"
+            android:text="Confirm Order"
             android:layout_marginTop="8dp" />
 
         <!-- Current Pizza Cost -->

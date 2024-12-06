@@ -28,6 +28,7 @@ public class HistoryActivity extends AppCompatActivity {
         statusLabel = findViewById(R.id.statusLabel);
         backToOrderViewButton = findViewById(R.id.backToOrderViewButton);
         cancelOrderButton = findViewById(R.id.cancelOrderButton);
+        backToMainMenuButton = findViewById(R.id.backToMainMenuButton);
 
         // Retrieve the shared StoreOrders singleton
         storeOrders = StoreOrders.getInstance();
@@ -59,11 +60,13 @@ public class HistoryActivity extends AppCompatActivity {
      */
     private List<String> formatOrders(List<Order> orders) {
         List<String> formattedOrders = new ArrayList<>();
-        for (Order order : orders) {
-            formattedOrders.add("Order #" + order.getOrderNumber() + ": " + order.getPizzas().size() + " pizzas");
+        for (int i = 0; i < orders.size(); i++) {
+            Order order = orders.get(i);
+            formattedOrders.add("Order " + (i + 1) + ": " + order.getPizzas().size() + " pizzas");
         }
         return formattedOrders;
     }
+
 
     /**
      * Populates the history list with all orders or shows a message if no orders exist.
@@ -78,15 +81,14 @@ public class HistoryActivity extends AppCompatActivity {
                     android.R.layout.simple_list_item_1,
                     new String[]{"No orders available."}
             );
-            orderHistoryListView.setAdapter(emptyAdapter); // Use your actual ListView or RecyclerView here
+            orderHistoryListView.setAdapter(emptyAdapter);
         } else {
-            // Populate with orders
             ArrayAdapter<Order> ordersAdapter = new ArrayAdapter<>(
                     this,
                     android.R.layout.simple_list_item_1,
                     allOrders
             );
-            orderHistoryListView.setAdapter(ordersAdapter); // Use your actual ListView or RecyclerView here
+            orderHistoryListView.setAdapter(ordersAdapter);
         }
     }
 
@@ -99,7 +101,9 @@ public class HistoryActivity extends AppCompatActivity {
      */
     private void displayOrderDetails(Order selectedOrder) {
         if (selectedOrder != null) {
-            StringBuilder orderDetails = new StringBuilder("Order #" + selectedOrder.getOrderNumber() + "\n\n");
+            int orderIndex = storeOrders.getOrders().indexOf(selectedOrder);
+            int orderNumber = orderIndex + 1; // Convert to 1-based indexing
+            StringBuilder orderDetails = new StringBuilder("Order #" + orderNumber + "\n\n");
             for (Pizza pizza : selectedOrder.getPizzas()) {
                 orderDetails.append(pizza.toString()).append("\n");
             }
@@ -114,18 +118,28 @@ public class HistoryActivity extends AppCompatActivity {
      * Cancels the selected order and updates the ListView.
      */
     private void cancelSelectedOrder() {
-        int selectedIndex = orderHistoryListView.getCheckedItemPosition();
+        int selectedIndex = orderHistoryListView.getCheckedItemPosition(); // Get the selected item's index
         if (selectedIndex != ListView.INVALID_POSITION) {
+            // Remove the order from the shared singleton and the local list
             Order orderToRemove = orderHistory.get(selectedIndex);
-            storeOrders.getOrders().remove(orderToRemove); // Remove from StoreOrders
-            orderHistoryAdapter.clear();
-            orderHistoryAdapter.addAll(formatOrders(orderHistory)); // Refresh the adapter
+            storeOrders.getOrders().remove(orderToRemove); // Remove from StoreOrders singleton
+            orderHistory.remove(orderToRemove); // Remove from local list
+
+            // Reinitialize and reassign the adapter
+            orderHistoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formatOrders(orderHistory));
+            orderHistoryListView.setAdapter(orderHistoryAdapter);
+
+            // Clear selection and update labels
+            orderHistoryListView.clearChoices(); // Clear the selection
             orderDetailsLabel.setText("Order canceled.");
-            Toast.makeText(this, "Order canceled.", Toast.LENGTH_SHORT).show();
+            statusLabel.setText("Order canceled successfully.");
+            Toast.makeText(this, "Order canceled successfully.", Toast.LENGTH_SHORT).show();
         } else {
             statusLabel.setText("Select an order to cancel.");
         }
     }
+
+
 
     /**
      * Navigates back to the main order view.

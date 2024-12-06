@@ -15,7 +15,6 @@ public class OrderManagementActivity extends AppCompatActivity {
     private EditText subtotalEditText, taxEditText, totalEditText;
     private Button clearOrderButton, placeOrderButton, mainButton;
     private ArrayAdapter<String> pizzaAdapter;
-
     private Order currentOrder;
     private StoreOrders storeOrders;
     private DecimalFormat df = new DecimalFormat("#,##0.00");
@@ -35,11 +34,9 @@ public class OrderManagementActivity extends AppCompatActivity {
         placeOrderButton = findViewById(R.id.placeOrderButton);
         mainButton = findViewById(R.id.mainButton);
 
-        storeOrders = StoreOrders.getInstance();
 
-        // Initialize data
-        currentOrder = new Order();
         storeOrders = StoreOrders.getInstance();
+        currentOrder = storeOrders.getLatestOrder();
 
         // Set up ListView adapter
         pizzaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
@@ -52,17 +49,21 @@ public class OrderManagementActivity extends AppCompatActivity {
 
         // Update the view
         updateOrderView();
+        updateOrderNumber(); // Add this call
     }
 
     /**
      * Updates the ListView and cost fields based on the current order.
      */
     private void updateOrderView() {
-        pizzaAdapter.clear();
-        for (Pizza pizza : currentOrder.getPizzas()) {
-            pizzaAdapter.add(pizza.toString());
+        pizzaAdapter.clear(); // Clear the current items in the adapter
+        if (currentOrder != null) {
+            for (Pizza pizza : currentOrder.getPizzas()) {
+                pizzaAdapter.add(pizza.toString()); // Add pizzas with proper toString output
+            }
         }
-        updateCosts();
+        pizzaAdapter.notifyDataSetChanged(); // Notify the adapter of changes
+        updateCosts(); // Update the cost fields
     }
 
     /**
@@ -78,6 +79,14 @@ public class OrderManagementActivity extends AppCompatActivity {
         totalEditText.setText("$" + df.format(total));
     }
 
+    private void updateOrderNumber() {
+        int orderIndex = storeOrders.getOrders().indexOf(currentOrder);
+        int orderNumber = orderIndex + 1; // Index starts at 0, so add 1
+        EditText orderNumberEditText = findViewById(R.id.orderNumberEditText);
+        orderNumberEditText.setText(String.valueOf(orderNumber));
+    }
+
+
     /**
      * Calculates the subtotal cost of all pizzas in the order.
      *
@@ -85,8 +94,10 @@ public class OrderManagementActivity extends AppCompatActivity {
      */
     private double calculateSubtotal() {
         double subtotal = 0;
-        for (Pizza pizza : currentOrder.getPizzas()) {
-            subtotal += pizza.price();
+        if (currentOrder != null) {
+            for (Pizza pizza : currentOrder.getPizzas()) {
+                subtotal += pizza.price();
+            }
         }
         return subtotal;
     }
@@ -95,7 +106,9 @@ public class OrderManagementActivity extends AppCompatActivity {
      * Clears the current order.
      */
     private void handleClearOrder() {
-        currentOrder.clearPizzas();
+        if (currentOrder != null) {
+            currentOrder.clearPizzas();
+        }
         updateOrderView();
         Toast.makeText(this, "Order cleared.", Toast.LENGTH_SHORT).show();
     }
@@ -104,12 +117,12 @@ public class OrderManagementActivity extends AppCompatActivity {
      * Places the current order and adds it to the store-wide orders.
      */
     private void handlePlaceOrder() {
-        if (currentOrder.getPizzas().isEmpty()) {
+        if (currentOrder == null || currentOrder.getPizzas().isEmpty()) {
             Toast.makeText(this, "Cannot place an empty order.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        storeOrders.addOrder(currentOrder);
+        // storeOrders.addOrder(currentOrder);
         currentOrder = new Order(); // Reset the current order
         updateOrderView();
         Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();

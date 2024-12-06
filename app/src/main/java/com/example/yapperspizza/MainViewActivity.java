@@ -5,15 +5,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
+
 
 public class MainViewActivity extends AppCompatActivity {
-
+    private static final String PREFS_NAME = "YappersPizzaPrefs";
+    private static final String KEY_FIRST_LAUNCH = "isFirstLaunch";
     private Button orderMenuButton, orderManagementButton, pastOrdersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);  // This is the layout you provided
+
+        // Check if this is the first launch
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isFirstLaunch = prefs.getBoolean(KEY_FIRST_LAUNCH, true);
+
+        if (isFirstLaunch) {
+            // Clear StoreOrders singleton
+            StoreOrders.getInstance().clearOrders();
+
+            // Mark initialization as complete
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_FIRST_LAUNCH, false);
+            editor.apply();
+        }
 
         // Initialize buttons
         orderMenuButton = findViewById(R.id.orderMenuButton);

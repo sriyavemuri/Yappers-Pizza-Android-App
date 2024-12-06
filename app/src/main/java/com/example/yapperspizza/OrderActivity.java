@@ -15,7 +15,7 @@ public class OrderActivity extends AppCompatActivity {
     private Spinner styleSpinner, sizeSpinner, typeSpinner;
     private RecyclerView toppingsRecyclerView, selectedToppingsRecyclerView;
     private TextView currentPizzaCost, totalOrderCost, footerText;
-    private Button addToOrderButton, placeOrderButton, backToMainMenuButton;
+    private Button addToOrderButton, confirmOrderButton, backToMainMenuButton;
     private ToppingAdapter availableToppingsAdapter, selectedToppingsAdapter;
     private EditText currentPizzaCostEditText, totalOrderCostEditText;
     private StoreOrders storeOrders;
@@ -23,9 +23,7 @@ public class OrderActivity extends AppCompatActivity {
     private PizzaFactory pizzaFactory;
     private List<Topping> availableToppings;
     private List<Topping> selectedToppings;
-
     private Pizza currentPizza;
-
     private static final double TOPPING_COST = 1.69;
     private static final int MAX_TOPPINGS = 7;
 
@@ -44,7 +42,7 @@ public class OrderActivity extends AppCompatActivity {
         totalOrderCostEditText = findViewById(R.id.totalOrderCostEditText);
         footerText = findViewById(R.id.footerText);
         addToOrderButton = findViewById(R.id.addToOrderButton);
-        placeOrderButton = findViewById(R.id.placeOrderButton);
+        confirmOrderButton = findViewById(R.id.confirmOrderButton);
         backToMainMenuButton = findViewById(R.id.backToMainMenuButton);
 
         // Initialize order and toppings
@@ -161,7 +159,7 @@ public class OrderActivity extends AppCompatActivity {
         });
 
         addToOrderButton.setOnClickListener(v -> handleAddPizzaToOrder());
-        placeOrderButton.setOnClickListener(v -> handlePlaceOrder());
+        confirmOrderButton.setOnClickListener(v -> handleConfirmOrder());
         backToMainMenuButton.setOnClickListener(v -> handleBackToMain());
     }
 
@@ -193,15 +191,33 @@ public class OrderActivity extends AppCompatActivity {
         }
     }
 
-    private void handlePlaceOrder() {
+//    private void handlePlaceOrder() {
+//        if (currentOrder.getPizzas().isEmpty()) {
+//            footerText.setText("Error: No pizzas in order.");
+//            return;
+//        }
+//        storeOrders.addOrder(currentOrder);
+//        currentOrder = new Order();
+//        updateTotalOrderCost();
+//        footerText.setText("Order placed successfully!");
+//    }
+
+    private void handleConfirmOrder() {
         if (currentOrder.getPizzas().isEmpty()) {
             footerText.setText("Error: No pizzas in order.");
             return;
         }
-        storeOrders.addOrder(currentOrder);
-        currentOrder = new Order();
-        updateTotalOrderCost();
-        footerText.setText("Order placed successfully!");
+
+        // Add the order to the StoreOrders singleton only once
+        StoreOrders storeOrders = StoreOrders.getInstance();
+        if (!storeOrders.getOrders().contains(currentOrder)) {
+            storeOrders.addOrder(currentOrder);
+        }
+
+        // Navigate to Order Management screen
+        Intent intent = new Intent(this, OrderManagementActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private Pizza createPizza() {

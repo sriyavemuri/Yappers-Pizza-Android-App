@@ -35,6 +35,6 @@ public class BBQChicken extends Pizza {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " " + getSize() + " " + getStyle() + " Style -> Crust: " +
-                getCrust() + " Toppings:" + getToppings();
+                getCrust() + " Toppings:" + getToppingNames();
     }
 }
